@@ -23,7 +23,7 @@ export class DigimonService {
 
           // Filter by name if specified
           if (name) {
-            digimon = digimon.filter(d => d.name.toLowerCase() === name.toLowerCase());
+            digimon = digimon.filter(d => d.name.toLowerCase().includes(name.toLowerCase()));
           }
 
           // Filter by level if specified

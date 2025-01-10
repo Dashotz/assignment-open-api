@@ -35,4 +35,25 @@ export class AppController {
       map(data => ({ digimon: data }))
     );
   }
+
+  @Get('digimon/all')
+  @Render('digimon-list')
+  @ApiOperation({ summary: 'Get all Digimon' })
+  getAllDigimon() {
+    return this.digimonService.getDigimonList().pipe(
+      map(data => ({ digimon: data }))
+    );
+  }
+
+  @Get('digimon/filter-by-name')
+  @Render('digimon-list')
+  @ApiOperation({ summary: 'Filter Digimon by name' })
+  filterByName(@Query('name') name: string) {
+    return this.digimonService.getDigimonList(undefined, undefined, name).pipe(
+      map(data => ({ 
+        digimon: Array.isArray(data) ? data : [data],
+        searchTerm: name,
+      }))
+    );
+  }
 }
