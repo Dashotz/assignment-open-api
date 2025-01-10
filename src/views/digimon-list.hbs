@@ -8,6 +8,22 @@
 </head>
 <body>
     <h1>All Digimon</h1>
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search Digimon..." value="{{searchTerm}}">
+        <button class="search-button">Search</button>
+    </div>
+    <div class="filters">
+        <label for="levelFilter">Filter by Level:</label>
+        <select id="levelFilter">
+            <option value="">All Levels</option>
+            <option value="In Training">In Training</option>
+            <option value="Rookie">Rookie</option>
+            <option value="Champion">Champion</option>
+            <option value="Ultimate">Ultimate</option>
+            <option value="Mega">Mega</option>
+            <option value="Fresh">Fresh</option>
+        </select>
+    </div>
     <div class="cards-grid">
         {{#each digimon}}
         <div class="card">
@@ -19,5 +35,44 @@
         </div>
         {{/each}}
     </div>
+    <script>
+        const searchDigimon = (searchTerm) => {
+            const currentUrl = new URL(window.location.href);
+            
+            if (!searchTerm.trim()) {
+                currentUrl.searchParams.delete('name');
+            } else {
+                currentUrl.searchParams.set('name', searchTerm);
+            }
+            
+            window.location.href = currentUrl.toString();
+        };
+
+        document.querySelector('.search-button').addEventListener('click', () => {
+            const searchTerm = document.querySelector('.search-input').value;
+            searchDigimon(searchTerm);
+        });
+
+        document.querySelector('.search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value;
+                searchDigimon(searchTerm);
+            }
+        });
+
+        // Level filter handling
+        document.querySelector('#levelFilter').addEventListener('change', (e) => {
+            const level = e.target.value;
+            const currentUrl = new URL(window.location.href);
+            
+            if (level) {
+                currentUrl.searchParams.set('level', level);
+            } else {
+                currentUrl.searchParams.delete('level');
+            }
+            
+            window.location.href = currentUrl.toString();
+        });
+    </script>
 </body>
 </html> 
