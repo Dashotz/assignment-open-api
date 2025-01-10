@@ -56,4 +56,16 @@ export class AppController {
       }))
     );
   }
+
+  @Get('digimon/filter-by-level')
+  @Render('digimon-list')
+  @ApiOperation({ summary: 'Filter Digimon by level' })
+  filterByLevel(@Query('level') level: string) {
+    return this.digimonService.getDigimonList(undefined, undefined, undefined, level).pipe(
+      map(data => ({ 
+        digimon: Array.isArray(data) ? data : [data],
+        currentLevel: level,
+      }))
+    );
+  }
 }
