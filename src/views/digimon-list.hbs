@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digimon List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background: #f8f8f8;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .card-level {
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .search-bar {
+            padding: 20px;
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            padding: 12px 20px;
+            width: 300px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .search-button:hover {
+            background: #0056b3;
+        }
+
+        .search-button:active {
+            transform: scale(0.98);
+        }
+
+        .nav-bar {
+            background: #333;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            margin-bottom: 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: #555;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #dc3545;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            background: white;
+        }
+
+        .filter-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+
+        .filter-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .active-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .filter-tag {
+            background: #007bff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="/api/v1/digimon" class="nav-link">Home</a>
+            <div>
+              
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search Digimon...">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="filters">
+            <label class="filter-label">Filter by Level:</label>
+            <select class="filter-select" id="levelFilter">
+                <option value="">All Levels</option>
+                <option value="In Training">In Training</option>
+                <option value="Rookie">Rookie</option>
+                <option value="Champion">Champion</option>
+                <option value="Ultimate">Ultimate</option>
+                <option value="Mega">Mega</option>
+                <option value="Fresh">Fresh</option>
+            </select>
+        </div>
+        {{#unless digimon}}
+        <div class="loading">Loading Digimon...</div>
+        {{/unless}}
+        <div class="cards-grid">
+            {{#each digimon}}
+            <a href="/api/v1/digimon/{{this.name}}" class="card">
+                <img src="{{this.img}}" alt="{{this.name}}">
+                <div class="card-content">
+                    <h2 class="card-title">{{this.name}}</h2>
+                    <p class="card-level">Level: {{this.level}}</p>
+                </div>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+    <script>
+        const searchDigimon = (searchTerm) => {
+            const currentUrl = new URL(window.location.href);
+            const level = currentUrl.searchParams.get('level');
+            
+            if (!searchTerm.trim()) {
+                if (level) {
+                    window.location.href = `/api/v1/digimon?level=${level}`;
+                } else {
+                    window.location.href = '/api/v1/digimon';
+                }
+                return;
+            }
+            
+            const encodedSearch = encodeURIComponent(searchTerm.trim());
+            let url = `/api/v1/digimon?name=${encodedSearch}`;
+            if (level) {
+                url += `&level=${level}`;
+            }
+            window.location.href = url;
+        };
+
+        document.querySelector('.search-button').addEventListener('click', () => {
+            const searchTerm = document.querySelector('.search-input').value;
+            searchDigimon(searchTerm);
+        });
+
+        document.querySelector('.search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value;
+                searchDigimon(searchTerm);
+            }
+        });
+
+        // Add this to handle the initial search term
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchTerm = urlParams.get('name');
+        if (searchTerm) {
+            document.querySelector('.search-input').value = searchTerm;
+        }
+
+        // Show no results message if needed
+        if (!document.querySelector('.card')) {
+            document.querySelector('.cards-grid').innerHTML = 
+                '<div class="error">No Digimon found</div>';
+        }
+
+        // Add level filter handling
+        document.querySelector('#levelFilter').addEventListener('change', (e) => {
+            const level = e.target.value;
+            const currentUrl = new URL(window.location.href);
+            
+            if (level) {
+                currentUrl.searchParams.set('level', level);
+            } else {
+                currentUrl.searchParams.delete('level');
+            }
+            
+            window.location.href = currentUrl.toString();
+        });
+
+        // Set the selected option based on currentLevel
+        if (currentLevel) {
+            document.querySelector('#levelFilter').value = currentLevel;
+        }
+    </script>
+</body>
+</html> 
