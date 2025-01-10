@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Filtered Digimon</h1>
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search Digimon..." value="{{searchTerm}}">
+        <button class="search-button">Search</button>
+    </div>
     <div class="cards-grid">
         {{#each digimon}}
         <div class="card">
@@ -19,5 +23,30 @@
         </div>
         {{/each}}
     </div>
+    <script>
+        const searchDigimon = (searchTerm) => {
+            const currentUrl = new URL(window.location.href);
+            
+            if (!searchTerm.trim()) {
+                currentUrl.searchParams.delete('name');
+            } else {
+                currentUrl.searchParams.set('name', searchTerm);
+            }
+            
+            window.location.href = currentUrl.toString();
+        };
+
+        document.querySelector('.search-button').addEventListener('click', () => {
+            const searchTerm = document.querySelector('.search-input').value;
+            searchDigimon(searchTerm);
+        });
+
+        document.querySelector('.search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = e.target.value;
+                searchDigimon(searchTerm);
+            }
+        });
+    </script>
 </body>
 </html> 
