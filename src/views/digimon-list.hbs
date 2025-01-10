@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filtered Digimon</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <h1>Filtered Digimon</h1>
+    <div class="cards-grid">
+        {{#each digimon}}
+        <div class="card">
+            <img src="{{this.img}}" alt="{{this.name}}">
+            <div class="card-content">
+                <h2 class="card-title">{{this.name}}</h2>
+                <p class="card-level">Level: {{this.level}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</body>
+</html> 
