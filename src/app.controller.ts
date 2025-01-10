@@ -27,18 +27,6 @@ export class AppController {
     );
   }
 
-  @Get('digimon/filter-by-name')
-  @Render('digimon-list')
-  @ApiOperation({ summary: 'Filter Digimon by name' })
-  filterByName(@Query('name') name: string) {
-    return this.digimonService.getDigimonList(undefined, undefined, name).pipe(
-      map(data => ({ 
-        digimon: Array.isArray(data) ? data : [data],
-        searchTerm: name,
-      }))
-    );
-  }
-
   @Get('digimon/:name')
   @Render('digimon-details')
   @ApiOperation({ summary: 'Get a digimon by name' })
@@ -57,14 +45,14 @@ export class AppController {
     );
   }
 
-  @Get('digimon/filter-by-level')
+  @Get('digimon/filter-by-name')
   @Render('digimon-list')
-  @ApiOperation({ summary: 'Filter Digimon by level' })
-  filterByLevel(@Query('level') level: string) {
-    return this.digimonService.getDigimonList(undefined, undefined, undefined, level).pipe(
+  @ApiOperation({ summary: 'Filter Digimon by name' })
+  filterByName(@Query('name') name: string) {
+    return this.digimonService.getDigimonList(undefined, undefined, name).pipe(
       map(data => ({ 
         digimon: Array.isArray(data) ? data : [data],
-        currentLevel: level,
+        searchTerm: name,
       }))
     );
   }
