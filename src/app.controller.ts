@@ -45,6 +45,7 @@ export class AppController {
     );
   }
 
+
   @Get('digimon/filter-by-name')
   @Render('digimon-list')
   @ApiOperation({ summary: 'Filter Digimon by name' })
@@ -56,4 +57,5 @@ export class AppController {
       }))
     );
   }
+
 }
